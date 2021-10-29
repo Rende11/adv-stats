@@ -44,18 +44,4 @@
    (let [search-string (str "?" (generate-search-params params))]
      {::push-params search-string})))
 
-(comment
 
-  (rf/dispatch [::redirect {"from" "json" "to" "yaml"}])
-
-  (parse-search-params "")
-
-  (some-> ""
-      (str/replace "?" "")
-      not-empty
-      (str/split #"=|&")
-      (->> (apply hash-map)))
-
-  (generate-search-params {"from" "a" "to" "z"})
-
-  )
