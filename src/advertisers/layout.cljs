@@ -8,31 +8,31 @@
 
 
 (def top-arrow
-  [:svg {:xmlns "http://www.w3.org/2000/svg"
-         :class "h-6 w-6"
-         :fill "none"
+  [:svg {:xmlns   "http://www.w3.org/2000/svg"
+         :class   "h-6 w-6"
+         :fill    "none"
          :viewBox "0 0 24 24"
-         :stroke "currentColor"}
-   [:path {:strokeLinecap "round"
+         :stroke  "currentColor"}
+   [:path {:strokeLinecap  "round"
            :strokeLinejoin "round"
-           :strokeWidth "{2}"
-           :d "M8 7l4-4m0 0l4 4m-4-4v18"}]])
+           :strokeWidth    "{2}"
+           :d              "M8 7l4-4m0 0l4 4m-4-4v18"}]])
 
 (def down-arrow
-  [:svg {:xmlns "http://www.w3.org/2000/svg"
-         :class "h-6 w-6"
-         :fill "none"
+  [:svg {:xmlns   "http://www.w3.org/2000/svg"
+         :class   "h-6 w-6"
+         :fill    "none"
          :viewBox "0 0 24 24"
-         :stroke "currentColor"}
-   [:path {:strokeLinecap "round"
+         :stroke  "currentColor"}
+   [:path {:strokeLinecap  "round"
            :strokeLinejoin "round"
-           :strokeWidth "{2}"
-           :d "M16 17l-4 4m0 0l-4-4m4 4V3"}]])
+           :strokeWidth    "{2}"
+           :d              "M16 17l-4 4m0 0l-4-4m4 4V3"}]])
 
 (defn sort-arrow []
   (when-let [order @(rf/subscribe [::model/sort-order])]
     (case order
-      "asc" top-arrow
+      "asc"  top-arrow
       "desc" down-arrow)))
 
 (def place-holder
@@ -54,40 +54,40 @@
    [:div.adv-grid.border.border-gray-500.mt-6
     [:div.adv-grid-header.flex.flex-row.border-b.border-gray-500.px-3.py-4
      [:div.font-bold.cursor-pointer.flex
-      {:class "w-1/4"
+      {:class    "w-1/4"
        :on-click #(rf/dispatch [::model/sort "name"])}
       [:span "ADVERTISER"]
       [sort-view "name"]]
 
      [:div.font-bold.text-center.cursor-pointer.flex
-      {:class "w-1/6"
+      {:class    "w-1/6"
        :on-click #(rf/dispatch [::model/sort "createdAt"])}
       [:span "CREATION DATE"]
       [sort-view "createdAt"]]
 
      [:div.font-bold.text-center.cursor-pointer.flex.justify-center
-      {:class "w-1/6"
+      {:class    "w-1/6"
        :on-click #(rf/dispatch [::model/sort "camp"])}
       place-holder
       [:span "# CAMPAIGNS"]
       [sort-view "camp"]]
 
      [:div.font-bold.text-center.cursor-pointer.flex.justify-center
-      {:class "w-1/6"
+      {:class    "w-1/6"
        :on-click #(rf/dispatch [::model/sort "impressions"])}
       place-holder
       [:span "IMPRESSIONS"]
       [sort-view "impressions"]]
 
      [:div.font-bold.text-center.cursor-pointer.flex.justify-center
-      {:class "w-1/6"
+      {:class    "w-1/6"
        :on-click #(rf/dispatch [::model/sort "clicks"])}
       place-holder
       [:span "CLICKS"]
       [sort-view "clicks"]]]
 
     (case @(rf/subscribe [::model/adv-state])
-      :error [:div.p-3.text-sm "Could not load advertisers"]
+      :error   [:div.p-3.text-sm "Could not load advertisers"]
       :loading [:div.p-3.text-sm "Loading..."]
       (doall
        (for [{:keys [id name date camp impressions clicks]} @(rf/subscribe [::model/advertisers])] 

@@ -22,6 +22,7 @@
     :dispatch-n [[::fetch-advertisers]
                  [::fetch-advertisers-stats]]}))
 
+
 (rf/reg-event-fx
  ::fetch-advertisers
  (fn [{db :db} _]
@@ -38,24 +39,24 @@
  ::load-advertisers-success
  (fn [{db :db} [_ body]]
    {:db (-> db
-            (assoc-in [:advertisers :items] body)
-            (assoc-in [:advertisers :state] :done))}))
+          (assoc-in [:advertisers :items] body)
+          (assoc-in [:advertisers :state] :done))}))
 
 (rf/reg-event-fx
  ::load-advertisers-fail
  (fn [{db :db} [_ body]]
    {:db (-> db
-            (assoc-in [:advertisers :error] body)
-            (assoc-in [:advertisers :state] :error))}))
+          (assoc-in [:advertisers :error] body)
+          (assoc-in [:advertisers :state] :error))}))
 
 (defn adv-xf [item]
   (assoc item
          :camp (count (:campaignIds item))
          :date (.toLocaleString (js/Date. (:createdAt item)) "nl" #js {"year"   "numeric"
-                                                                               "month"  "2-digit"
-                                                                               "day"    "2-digit"
-                                                                               "hour"   "2-digit"
-                                                                               "minute" "2-digit" })))
+                                                                       "month"  "2-digit"
+                                                                       "day"    "2-digit"
+                                                                       "hour"   "2-digit"
+                                                                       "minute" "2-digit" })))
 
 
 (rf/reg-event-fx
@@ -67,23 +68,22 @@
                  :on-success      [::load-advertisers-stats-success]
                  :on-failure      [::load-advertisers-stats-fail]}
     :db (-> db
-            (assoc-in [:advertisers-stats :state] :loading)
-            (update-in [:advertisers-stats] dissoc :error))}))
+          (assoc-in [:advertisers-stats :state] :loading)
+          (update-in [:advertisers-stats] dissoc :error))}))
 
 (rf/reg-event-fx
  ::load-advertisers-stats-success
  (fn [{db :db} [_ body]]
    {:db (-> db
-            (assoc-in [:advertisers-stats :items] body)
-            (assoc-in [:advertisers-stats :state] :done))}))
+          (assoc-in [:advertisers-stats :items] body)
+          (assoc-in [:advertisers-stats :state] :done))}))
 
 (rf/reg-event-fx
  ::load-advertisers-stats-fail
  (fn [{db :db} [_ body]]
    {:db (-> db
-            (assoc-in [:advertisers-stats :error] body)
-            (assoc-in [:advertisers-stats :state] :error))}))
-
+          (assoc-in [:advertisers-stats :error] body)
+          (assoc-in [:advertisers-stats :state] :error))}))
 
 
 (rf/reg-sub
@@ -100,11 +100,6 @@
  ::sort-order
  (fn [db _]
    (get-in db [:sort :order])))
-
-(rf/reg-sub
- ::advertiser-items
- (fn [db _]
-   (map adv-xf (get-in db [:advertisers :items]))))
 
 (rf/reg-sub
  ::advertiser-items
@@ -142,9 +137,9 @@
      items)))
 
 (def order-change-map
-  {nil "desc"
+  {nil    "desc"
    "desc" "asc"
-   "asc" nil})
+   "asc"  nil})
 
 (rf/reg-event-fx
  ::sort
@@ -155,13 +150,13 @@
                       (get order-change-map curr-order)
                       "desc")]
      (if sort-order
-       {:dispatch [::loc/redirect-merge {"sort" field-name
+       {:dispatch [::loc/redirect-merge {"sort"  field-name
                                          "order" sort-order}]
         :db (-> db
-                (assoc-in [:sort :field] field-name)
-                (assoc-in [:sort :order] sort-order))}
+              (assoc-in [:sort :field] field-name)
+              (assoc-in [:sort :order] sort-order))}
 
        {:dispatch [::loc/redirect {}]
         :db (-> db
-                (assoc-in [:sort :field] nil)
-                (assoc-in [:sort :order] nil))}))))
+              (assoc-in [:sort :field] nil)
+              (assoc-in [:sort :order] nil))}))))
