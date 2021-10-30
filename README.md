@@ -1,6 +1,6 @@
 ## Advertisers app
 
-[DEMO](https://advertisers-rende11.vercel.app/)
+[DEMO](https://adv-stats.vercel.app/)
 #### UI
 ##### Install UI deps
 ```
