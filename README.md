@@ -12,6 +12,7 @@ npm install
 ```
 npm run start
 ```
+App starts on `http://localhost:3000`
 
 ##### Release UI build
 ```
